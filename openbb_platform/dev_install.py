@@ -36,6 +36,7 @@ openbb-polygon = { path = "./providers/polygon", develop = true }
 openbb-sec = { path = "./providers/sec", develop = true }
 openbb-tiingo = { path = "./providers/tiingo", develop = true }
 openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
+openbb-us-eia = { path = "./providers/eia", develop = true }
 openbb-yfinance = { path = "./providers/yfinance", develop = true }
 
 openbb-commodity = { path = "./extensions/commodity", develop = true }
@@ -54,6 +55,7 @@ openbb-regulators = { path = "./extensions/regulators", develop = true }
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
+openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
@@ -145,7 +147,7 @@ def install_platform_local(_extras: bool = False):
         extras_args = ["-E", "all"] if _extras else []
 
         subprocess.run(
-            CMD + ["lock", "--no-update"],
+            CMD + ["lock"],
             cwd=PLATFORM_PATH,
             check=True,
         )
@@ -190,7 +192,7 @@ def install_platform_cli():
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(
-            CMD + ["lock", "--no-update"],
+            CMD + ["lock"],
             cwd=CLI_PATH,
             check=True,  # noqa: S603
         )
