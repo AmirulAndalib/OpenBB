@@ -2,6 +2,52 @@
 
 from openbb_core.provider.utils.helpers import to_snake_case
 
+TO_CAPS_STRINGS = [
+    "Pe",
+    "Peg",
+    "Sloos",
+    "Eps",
+    "Ebit",
+    "Ebitda",
+    "Otc",
+    "Cpi",
+    "Pce",
+    "Gdp",
+    "Lbma",
+    "Ipo",
+    "Nbbo",
+    "Ameribor",
+    "Sonia",
+    "Effr",
+    "Sofr",
+    "Iorb",
+    "Estr",
+    "Ecb",
+    "Dpcredit",
+    "Tcm",
+    "Us",
+    "Ice",
+    "Bofa",
+    "Hqm",
+    "Sp500",
+    "Sec",
+    "Cftc",
+    "Cot",
+    "Etf",
+    "Eu",
+    "Tips",
+    "Rss",
+    "Sic",
+    "Cik",
+    "Bls",
+    "Fred",
+    "Cusip",
+    "Ttm",
+    "Id",
+    "Ytd",
+    "Yoy",
+]
+
 
 def extract_providers(params: list[dict]) -> list[str]:
     """
@@ -303,15 +349,30 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                 # Get the reference to the schema from the successful response
                 response_ref = details["responses"]["200"]["content"][
                     "application/json"
-                ]["schema"]["$ref"]
-                # Extract the schema name from the reference
-                schema_name = response_ref.split("/")[-1]
-                # Fetch and return the schema from components
-                return (
-                    openapi_json["components"]["schemas"][schema_name]
-                    .get("properties", {})
-                    .get("results", {})
+                ].get("schema", {}).get("$ref") or details["responses"]["200"][
+                    "content"
+                ][
+                    "application/json"
+                ].get(
+                    "schema"
                 )
+
+                if isinstance(response_ref, dict) and "type" in response_ref:
+                    response_ref = response_ref["type"]
+
+                if response_ref:
+                    # Extract the schema name from the reference
+                    schema_name = response_ref.split("/")[-1]
+                    # Fetch and return the schema from components
+                    if (
+                        schema_name
+                        and schema_name in openapi_json["components"]["schemas"]
+                    ):
+                        return (
+                            openapi_json["components"]["schemas"][schema_name]
+                            .get("properties", {})
+                            .get("results", {})
+                        )
 
     # Return None if the schema is not found
     return None
@@ -319,12 +380,13 @@ def get_data_schema_for_widget(openapi_json, operation_id):
 
 def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     """Convert data schema to column definitions for the widget."""
+
     # Initialize an empty list to hold the schema references
     schema_refs: list = []
 
     result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id)
     # Check if 'anyOf' is in the result_schema_ref and handle the nested structure
-    if "anyOf" in result_schema_ref:
+    if result_schema_ref and "anyOf" in result_schema_ref:
         for item in result_schema_ref["anyOf"]:
             # When there are multiple providers a 'oneOf' is used
             if "items" in item and "oneOf" in item["items"]:
@@ -344,7 +406,7 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     schemas = [
         openapi_json["components"]["schemas"][ref]
         for ref in schema_refs
-        if ref in openapi_json["components"]["schemas"]
+        if ref and ref in openapi_json["components"]["schemas"]
     ]
 
     # Proceed with finding common keys and generating column definitions
@@ -420,8 +482,14 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
             column_def["pinned"] = "left"
 
         column_def["formatterFn"] = formatterFn
-        column_def["headerName"] = prop.get("title", key.title())
-        column_def["description"] = prop.get(
+        header_name = prop.get("title", key.title())
+        column_def["headerName"] = " ".join(
+            [
+                (word.upper() if word in TO_CAPS_STRINGS else word)
+                for word in header_name.split(" ")
+            ]
+        )
+        column_def["headerTooltip"] = prop.get(
             "description", prop.get("title", key.title())
         )
         column_def["cellDataType"] = cell_data_type
@@ -448,6 +516,10 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
             column_def["headerName"] = (
                 column_def["headerName"].upper() if k != "symbol" else "Symbol"
             )
+
+        if k in ["fiscal_year", "year"]:
+            column_def["cellDataType"] = "number"
+            column_def["formatterFn"] = "none"
 
         column_defs.append(column_def)
 
