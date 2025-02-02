@@ -1,39 +1,40 @@
 {
-    "openbb": "4.3.3",
+    "openbb": "4.3.5",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.4",
+        "core": "1.3.7",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.3",
-                "crypto@1.3.3",
-                "currency@1.3.3",
-                "derivatives@1.3.3",
-                "economy@1.3.3",
-                "equity@1.3.3",
-                "etf@1.3.3",
-                "fixedincome@1.3.3",
-                "index@1.3.3",
-                "news@1.3.3",
-                "regulators@1.3.3"
+                "commodity@1.2.6",
+                "crypto@1.3.5",
+                "currency@1.3.5",
+                "derivatives@1.3.5",
+                "economy@1.3.5",
+                "equity@1.3.5",
+                "etf@1.3.5",
+                "fixedincome@1.3.5",
+                "index@1.3.5",
+                "news@1.3.5",
+                "regulators@1.3.5"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.3",
-                "bls@1.0.1",
-                "cftc@1.0.1",
-                "econdb@1.2.3",
-                "federal_reserve@1.3.3",
-                "fmp@1.3.3",
-                "fred@1.3.3",
-                "imf@1.0.0",
-                "intrinio@1.3.3",
-                "oecd@1.3.3",
-                "polygon@1.3.3",
-                "sec@1.3.3",
-                "tiingo@1.3.3",
-                "tradingeconomics@1.3.3",
-                "yfinance@1.3.4"
+                "benzinga@1.3.5",
+                "bls@1.0.3",
+                "cftc@1.0.3",
+                "econdb@1.2.5",
+                "federal_reserve@1.3.5",
+                "fmp@1.3.5",
+                "fred@1.3.5",
+                "imf@1.0.2",
+                "intrinio@1.3.5",
+                "oecd@1.3.5",
+                "polygon@1.3.5",
+                "sec@1.3.5",
+                "tiingo@1.3.5",
+                "tradingeconomics@1.3.5",
+                "us_eia@1.0.0",
+                "yfinance@1.3.6"
             ],
             "openbb_obbject_extension": []
         }
@@ -218,6 +219,381 @@
             },
             "model": "CommoditySpotPrices"
         },
+        "/commodity/petroleum_status_report": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "EIA Weekly Petroleum Status Report.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Weekly Petroleum Status Report.\nobb.commodity.petroleum_status_report(provider='eia')\n# Select the category of data, and filter for a specific table within the report.\nobb.commodity.petroleum_status_report(category=weekly_estimates, table=imports, provider='eia')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": [
+                    {
+                        "name": "category",
+                        "type": "Literal['balance_sheet', 'inputs_and_production', 'refiner_blender_net_production', 'crude_petroleum_stocks', 'gasoline_fuel_stocks', 'total_gasoline_by_sub_padd', 'distillate_fuel_oil_stocks', 'imports', 'imports_by_country', 'weekly_estimates', 'spot_prices_crude_gas_heating', 'spot_prices_diesel_jet_fuel_propane', 'retail_prices']",
+                        "description": "The group of data to be returned. The default is the balance sheet.",
+                        "default": "balance_sheet",
+                        "optional": true,
+                        "choices": [
+                            "balance_sheet",
+                            "inputs_and_production",
+                            "refiner_blender_net_production",
+                            "crude_petroleum_stocks",
+                            "gasoline_fuel_stocks",
+                            "total_gasoline_by_sub_padd",
+                            "distillate_fuel_oil_stocks",
+                            "imports",
+                            "imports_by_country",
+                            "weekly_estimates",
+                            "spot_prices_crude_gas_heating",
+                            "spot_prices_diesel_jet_fuel_propane",
+                            "retail_prices"
+                        ]
+                    },
+                    {
+                        "name": "table",
+                        "type": "Union[str, List[str]]",
+                        "description": "The specific table element within the category to be returned, default is 'stocks', if the category is 'weekly_estimates', else 'all'.\n    Note: Choices represent all available tables from the entire collection and are not all available for every category.\n    Invalid choices will raise a ValidationError with a message indicating the valid choices for the selected category.\n    Choices are:\n        all\n        conventional_gas\n        crude\n        crude_production\n        crude_production_avg\n        diesel\n        ethanol_plant_production\n        ethanol_plant_production_avg\n        exports\n        exports_avg\n        heating_oil\n        imports\n        imports_avg\n        imports_by_country\n        imports_by_country_avg\n        inputs_and_utilization\n        inputs_and_utilization_avg\n        jet_fuel\n        monthly\n        net_imports_inc_spr_avg\n        net_imports_incl_spr\n        net_production\n        net_production_avg\n        net_production_by_product\n        net_production_by_production_avg\n        product_by_region\n        product_by_region_avg\n        product_supplied\n        product_supplied_avg\n        propane\n        rbob\n        refiner_blender_net_production\n        refiner_blender_net_production_avg\n        stocks\n        supply\n        supply_avg\n        ulta_low_sulfur_distillate_reclassification\n        ulta_low_sulfur_distillate_reclassification_avg\n        weekly Multiple items allowed for provider(s): eia.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "conventional_gas",
+                            "crude",
+                            "crude_production",
+                            "crude_production_avg",
+                            "diesel",
+                            "ethanol_plant_production",
+                            "ethanol_plant_production_avg",
+                            "exports",
+                            "exports_avg",
+                            "heating_oil",
+                            "imports",
+                            "imports_avg",
+                            "imports_by_country",
+                            "imports_by_country_avg",
+                            "inputs_and_utilization",
+                            "inputs_and_utilization_avg",
+                            "jet_fuel",
+                            "monthly",
+                            "net_imports_inc_spr_avg",
+                            "net_imports_incl_spr",
+                            "net_production",
+                            "net_production_avg",
+                            "net_production_by_product",
+                            "net_production_by_production_avg",
+                            "product_by_region",
+                            "product_by_region_avg",
+                            "product_supplied",
+                            "product_supplied_avg",
+                            "propane",
+                            "rbob",
+                            "refiner_blender_net_production",
+                            "refiner_blender_net_production_avg",
+                            "stocks",
+                            "supply",
+                            "supply_avg",
+                            "ulta_low_sulfur_distillate_reclassification",
+                            "ulta_low_sulfur_distillate_reclassification_avg",
+                            "weekly"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Subsequent requests for the same source data are cached for the session using ALRU cache.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PetroleumStatusReport]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['eia']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "Table name for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Presented order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit or scale of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": []
+            },
+            "model": "PetroleumStatusReport"
+        },
+        "/commodity/short_term_energy_outlook": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Monthly short term (18 month) projections using EIA's STEO model.\n\nSource: www.eia.gov/steo/",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Short Term Energy Outlook.\nobb.commodity.short_term_energy_outlook(provider='eia')\n# Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.\nobb.commodity.short_term_energy_outlook(table=03d, provider='eia')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API. Multiple items allowed for provider(s): eia.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']",
+                        "description": "The specific table within the STEO dataset. Default is '01'. When 'symbol' is provided, this parameter is ignored.\n        01: US Energy Markets Summary\n        02: Nominal Energy Prices\n        03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories\n        03b: Non-OPEC Petroleum and Other Liquid Fuels Production\n        03c: World Petroleum and Other Liquid Fuels Production\n        03d: World Crude Oil Production\n        03e: World Petroleum and Other Liquid Fuels Consumption\n        04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories\n        04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances\n        04c: US Regional Motor Gasoline Prices and Inventories\n        04d: US Biofuel Supply, Consumption, and Inventories\n        05a: US Natural Gas Supply, Consumption, and Inventories\n        05b: US Regional Natural Gas Prices\n        06: US Coal Supply, Consumption, and Inventories\n        07a: US Electricity Industry Overview\n        07b: US Regional Electricity Retail Sales\n        07c: US Regional Electricity Prices\n        07d1: US Regional Electricity Generation, Electric Power Sector\n        07d2: US Regional Electricity Generation, Electric Power Sector, continued\n        07e: US Electricity Generating Capacity\n        08: US Renewable Energy Consumption\n        09a: US Macroeconomic Indicators and CO2 Emissions\n        09b: US Regional Macroeconomic Data\n        09c: US Regional Weather Data\n        10a: Drilling Productivity Metrics\n        10b: Crude Oil and Natural Gas Production from Shale and Tight Formations",
+                        "default": "01",
+                        "optional": true,
+                        "choices": [
+                            "01",
+                            "02",
+                            "03a",
+                            "03b",
+                            "03c",
+                            "03d",
+                            "03e",
+                            "04a",
+                            "04b",
+                            "04c",
+                            "04d",
+                            "05a",
+                            "05b",
+                            "06",
+                            "07a",
+                            "07b",
+                            "07c",
+                            "07d1",
+                            "07d2",
+                            "07e",
+                            "08",
+                            "09a",
+                            "09b",
+                            "09c",
+                            "10a",
+                            "10b"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['month', 'quarter', 'annual']",
+                        "description": "The frequency of the data. Default is 'month'.",
+                        "default": "month",
+                        "optional": true,
+                        "choices": [
+                            "month",
+                            "quarter",
+                            "annual"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ShortTermEnergyOutlook]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['eia']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "Table name for the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Presented order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit or scale of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": []
+            },
+            "model": "ShortTermEnergyOutlook"
+        },
         "/crypto/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -299,7 +675,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '7d', '30d'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -308,15 +684,19 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "7d",
+                            "30d"
                         ]
                     },
                     {
                         "name": "exchanges",
-                        "type": "List[str]",
-                        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX']",
+                        "type": "Union[Union[list[str], str], List[Union[list[str], str]]]",
+                        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -671,7 +1051,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '5d', '21d'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -680,9 +1060,13 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "5d",
+                            "21d"
                         ]
                     }
                 ],
@@ -1050,7 +1434,7 @@
                     },
                     {
                         "name": "counter_currencies",
-                        "type": "Union[List[str], str]",
+                        "type": "Union[str, List[str]]",
                         "description": "An optional list of counter currency symbols to filter for. None returns all.",
                         "default": null,
                         "optional": true,
@@ -1407,6 +1791,18 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "delay",
+                        "type": "Literal['eod', 'realtime', 'delayed']",
+                        "description": "Whether to return delayed, realtime, or eod data.",
+                        "default": "eod",
+                        "optional": true,
+                        "choices": [
+                            "eod",
+                            "realtime",
+                            "delayed"
+                        ]
+                    },
+                    {
                         "name": "date",
                         "type": "Union[date, str]",
                         "description": "The end-of-day date for options chains data.",
@@ -1491,7 +1887,10 @@
                         "description": "The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied.",
                         "default": "black_scholes",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "black_scholes",
+                            "bjerk"
+                        ]
                     },
                     {
                         "name": "show_extended_price",
@@ -1608,8 +2007,16 @@
                         "choices": null
                     },
                     {
+                        "name": "contract_size",
+                        "type": "List[Union[int, float]]",
+                        "description": "Number of underlying units per contract.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "open_interest",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Open interest on the contract.",
                         "default": "",
                         "optional": true,
@@ -1617,7 +2024,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": true,
@@ -1641,7 +2048,7 @@
                     },
                     {
                         "name": "last_trade_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Last trade size of the option.",
                         "default": "",
                         "optional": true,
@@ -1673,7 +2080,7 @@
                     },
                     {
                         "name": "bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Bid size for the option.",
                         "default": "",
                         "optional": true,
@@ -1705,7 +2112,7 @@
                     },
                     {
                         "name": "ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Ask size for the option.",
                         "default": "",
                         "optional": true,
@@ -1817,7 +2224,7 @@
                     },
                     {
                         "name": "close_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing trade size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -1841,7 +2248,7 @@
                     },
                     {
                         "name": "close_bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing bid size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -1865,7 +2272,7 @@
                     },
                     {
                         "name": "close_ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing ask size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2621,7 +3028,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": null,
                         "optional": true,
@@ -4272,7 +4679,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -5523,16 +5930,20 @@
                 ],
                 "fred": [
                     {
-                        "name": "is_release",
-                        "type": "bool",
-                        "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
-                        "default": false,
+                        "name": "search_type",
+                        "type": "Literal['full_text', 'series_id', 'release']",
+                        "description": "The type of search to perform. Automatically set to 'release' when a 'release_id' is provided.",
+                        "default": "full_text",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "full_text",
+                            "series_id",
+                            "release"
+                        ]
                     },
                     {
                         "name": "release_id",
-                        "type": "Union[int, str]",
+                        "type": "Annotated[int, Ge(ge=0)]",
                         "description": "A specific release ID to target.",
                         "default": null,
                         "optional": true,
@@ -5540,7 +5951,7 @@
                     },
                     {
                         "name": "limit",
-                        "type": "int",
+                        "type": "Annotated[int, Ge(ge=0)]",
                         "description": "The number of data entries to return. (1-1000)",
                         "default": null,
                         "optional": true,
@@ -5549,8 +5960,38 @@
                     {
                         "name": "offset",
                         "type": "Annotated[int, Ge(ge=0)]",
-                        "description": "Offset the results in conjunction with limit.",
+                        "description": "Offset the results in conjunction with limit. This parameter is ignored When search_type is 'release'.",
                         "default": 0,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "order_by",
+                        "type": "Literal['search_rank', 'series_id', 'title', 'units', 'frequency', 'seasonal_adjustment', 'realtime_start', 'realtime_end', 'last_updated', 'observation_start', 'observation_end', 'popularity', 'group_popularity']",
+                        "description": "Order the results by a specific attribute. The default is 'observation_end'.",
+                        "default": "observation_end",
+                        "optional": true,
+                        "choices": [
+                            "search_rank",
+                            "series_id",
+                            "title",
+                            "units",
+                            "frequency",
+                            "seasonal_adjustment",
+                            "realtime_start",
+                            "realtime_end",
+                            "last_updated",
+                            "observation_start",
+                            "observation_end",
+                            "popularity",
+                            "group_popularity"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "type": "Literal['asc', 'desc']",
+                        "description": "Sort the 'order_by' item in ascending or descending order. The default is 'desc'.",
+                        "default": "desc",
                         "optional": true,
                         "choices": null
                     },
@@ -5565,7 +6006,7 @@
                     {
                         "name": "filter_value",
                         "type": "str",
-                        "description": "String value to filter the variable by.  Used in conjunction with filter_variable.",
+                        "description": "String value to filter the variable by.  Used in conjunction with filter_variable. This parameter is ignored when search_type is 'release'.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5573,7 +6014,7 @@
                     {
                         "name": "tag_names",
                         "type": "Union[str, List[str]]",
-                        "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple items allowed for provider(s): fred.",
+                        "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' This parameter is ignored when search_type is 'release'. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5581,7 +6022,7 @@
                     {
                         "name": "exclude_tag_names",
                         "type": "Union[str, List[str]]",
-                        "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple items allowed for provider(s): fred.",
+                        "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. This parameter is ignored when search_type is 'release'. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5629,7 +6070,7 @@
                 "standard": [
                     {
                         "name": "release_id",
-                        "type": "Union[int, str]",
+                        "type": "str",
                         "description": "The release ID for queries.",
                         "default": null,
                         "optional": true,
@@ -5639,6 +6080,22 @@
                         "name": "series_id",
                         "type": "str",
                         "description": "The series ID for the item in the release.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "series_group",
+                        "type": "str",
+                        "description": "The series group ID of the series. This value is used to query for regional data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "region_type",
+                        "type": "str",
+                        "description": "The region type of the series.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5732,6 +6189,38 @@
                         "choices": null
                     },
                     {
+                        "name": "popularity",
+                        "type": "int",
+                        "description": "Popularity of the series",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "group_popularity",
+                        "type": "int",
+                        "description": "Group popularity of the release",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "realtime_start",
+                        "type": "date",
+                        "description": "The realtime start date of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "realtime_end",
+                        "type": "date",
+                        "description": "The realtime end date of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "notes",
                         "type": "str",
                         "description": "Description of the release.",
@@ -5756,40 +6245,7 @@
                         "choices": null
                     }
                 ],
-                "fred": [
-                    {
-                        "name": "popularity",
-                        "type": "int",
-                        "description": "Popularity of the series",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "group_popularity",
-                        "type": "int",
-                        "description": "Group popularity of the release",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "region_type",
-                        "type": "str",
-                        "description": "The region type of the series.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "series_group",
-                        "type": "Union[int, str]",
-                        "description": "The series group ID of the series. This value is used to query for regional data.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
+                "fred": []
             },
             "model": "FredSearch"
         },
@@ -7231,7 +7687,16 @@
                         "choices": null
                     }
                 ],
-                "imf": []
+                "imf": [
+                    {
+                        "name": "query",
+                        "type": "Union[str, List[str]]",
+                        "description": "The query string to search through the available indicators. Use semicolons to separate multiple terms. Multiple items allowed for provider(s): imf.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -7381,6 +7846,14 @@
                 ],
                 "imf": [
                     {
+                        "name": "dataset",
+                        "type": "str",
+                        "description": "The IMF dataset associated with the symbol.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "table",
                         "type": "str",
                         "description": "The name of the table associated with the symbol.",
@@ -7398,8 +7871,24 @@
                     },
                     {
                         "name": "order",
-                        "type": "int",
+                        "type": "Union[int, float]",
                         "description": "Order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "children",
+                        "type": "str",
+                        "description": "The symbol of the child data, if any.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "The unit of the data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -7414,7 +7903,7 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol=PCOCO)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol=main, country='eu')\n# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.\nobb.economy.indicators(provider='imf')\n# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.\nobb.economy.indicators(provider='imf', symbol=gold_reserves)\n# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.\nobb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol=PCOCO)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol=main, country='eu')\n# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.\nobb.economy.indicators(provider='imf')\n# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.\nobb.economy.indicators(provider='imf', symbol=gold_reserves)\n# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.\nobb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)\n# When the provider is 'imf', additional presets return the core Financial Soundness Indicators.\n    'fsi_core' -  Core FSIs\n    'fsi_encouraged_set' - Encouraged Set of FSIs,\n    'fsi_core_underlying' - Underlying data for the Core FSIs.\n    'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set.\n    'fsi_all' - all FSI data for a single country.\nobb.economy.indicators(provider='imf', symbol=fsi_encouraged_set, country='us,fr,gb', start_date='2022-01-01', end_date='2023-12-31', frequency=annual)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -7697,7 +8186,7 @@
                     {
                         "name": "symbol",
                         "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from the set of indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:\n\n        'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.\n        'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.\n        'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.\n        'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.\n        'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.\n        'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.\n        'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.\n        'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries. Multiple items allowed for provider(s): imf.",
+                        "description": "Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from International Reserves & Foreign Currency Liquidity indicators. Use 'core_fsi' to get the core Financial Soundness Indicators. Use 'core_fsi_underlying' to include underlying data for the core Financial Soundness Indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:\n\n        'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.\n        'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.\n        'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.\n        'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.\n        'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.\n        'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.\n        'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.\n        'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries.\n        'fsi_core': The core Financial Soundness Indicators. Compatible with multiple countries.\n        'fsi_core_underlying': The core FSIs underlying series data. Not compatible with country='all'.\n        'fsi_encouraged_set': The encouraged set of Financial Soundness Indicators. Not compatible with country='all'.\n        'fsi_other': The other Financial Soundness Indicators. Not compatible with country='all'.\n        'fsi_balance_sheets': Data categorized as Balance Sheets and Income Statements. Not compatible with country='all'.\n        'fsi_all': All the Financial Soundness Indicators. Not compatible with multiple countries. Multiple items allowed for provider(s): imf.",
                         "default": "irfcl_top_lines",
                         "optional": true,
                         "choices": null
@@ -7705,7 +8194,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['annual', 'quarter', 'month']",
-                        "description": "Frequency of the data.",
+                        "description": "Frequency of the data, default is 'quarter'.",
                         "default": "quarter",
                         "optional": true,
                         "choices": [
@@ -7791,6 +8280,14 @@
                 "econdb": [],
                 "imf": [
                     {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "The unit of the value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "scale",
                         "type": "str",
                         "description": "The scale of the value.",
@@ -7816,7 +8313,7 @@
                     },
                     {
                         "name": "order",
-                        "type": "int",
+                        "type": "Union[int, float]",
                         "description": "Order of the data, relative to the table.",
                         "default": null,
                         "optional": true,
@@ -9209,7 +9706,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -9782,6 +10279,7 @@
                             "dominica",
                             "dominican_republic",
                             "east_germany",
+                            "eastern_caribbean_currency_union",
                             "ecuador",
                             "egypt",
                             "el_salvador",
@@ -10037,6 +10535,7 @@
                             "dominica",
                             "dominican_republic",
                             "east_germany",
+                            "eastern_caribbean_currency_union",
                             "ecuador",
                             "egypt",
                             "el_salvador",
@@ -11683,11 +12182,23 @@
                         "description": "Filter by a specific action_company.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "downgrades",
+                            "maintains",
+                            "reinstates",
+                            "reiterates",
+                            "upgrades",
+                            "assumes",
+                            "initiates",
+                            "terminates",
+                            "removes",
+                            "suspends",
+                            "firm_dissolved"
+                        ]
                     },
                     {
                         "name": "analyst_ids",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -11695,7 +12206,7 @@
                     },
                     {
                         "name": "firm_ids",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of firm IDs. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -11703,7 +12214,7 @@
                     },
                     {
                         "name": "fields",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -13905,7 +14416,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -13989,9 +14509,65 @@
                 ],
                 "yfinance": [
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "open",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14005,9 +14581,89 @@
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "book_value",
+                        "type": "float",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14034,7 +14690,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14118,25 +14783,161 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14163,7 +14964,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14247,25 +15057,161 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
-                        "description": "Market Cap displayed in billions.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Market Cap.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14292,7 +15238,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14376,6 +15331,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -14384,17 +15403,89 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14421,7 +15512,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14505,6 +15605,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -14513,17 +15677,89 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14550,7 +15786,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results. Default is all.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14634,6 +15879,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -14642,17 +15951,89 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14679,7 +16060,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14763,6 +16153,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -14771,17 +16225,89 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14926,6 +16452,196 @@
                 "fmp": []
             },
             "model": "DiscoveryFilings"
+        },
+        "/equity/discovery/latest_financial_reports": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the newest quarterly, annual, and current reports for all companies.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.latest_financial_reports(provider='sec')\nobb.equity.discovery.latest_financial_reports(provider='sec', date=2024-09-30)\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "A specific date to get data for. Defaults to today.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "report_type",
+                        "type": "Union[str, List[str]]",
+                        "description": "Return only a specific form type. Default is all quarterly, annual, and current reports. Choices: 1-K, 1-SA, 1-U, 10-D, 10-K, 10-KT, 10-Q, 10-QT, 20-F, 40-F, 6-K, 8-K. Multiple items allowed for provider(s): sec.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "1-K",
+                            "1-SA",
+                            "1-U",
+                            "10-D",
+                            "10-K",
+                            "10-KT",
+                            "10-Q",
+                            "10-QT",
+                            "20-F",
+                            "40-F",
+                            "6-K",
+                            "8-K"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[LatestFinancialReports]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "filing_date",
+                        "type": "date",
+                        "description": "The date of the filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "Report for the period ending.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the company.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cik",
+                        "type": "str",
+                        "description": "Central Index Key (CIK) for the requested entity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "sic",
+                        "type": "str",
+                        "description": "Standard Industrial Classification code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "report_type",
+                        "type": "str",
+                        "description": "Type of filing.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "Description of the report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL to the filing page.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "items",
+                        "type": "str",
+                        "description": "Item codes associated with the filing.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index_headers",
+                        "type": "str",
+                        "description": "URL to the index headers file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "complete_submission",
+                        "type": "str",
+                        "description": "URL to the complete submission text file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "metadata",
+                        "type": "str",
+                        "description": "URL to the MetaLinks.json file, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "financial_report",
+                        "type": "str",
+                        "description": "URL to the Financial_Report.xlsx file, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "LatestFinancialReports"
         },
         "/equity/fundamental/multiples": {
             "deprecated": {
@@ -15650,8 +17366,16 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "period",
-                        "type": "Literal['annual', 'quarter', 'ttm']",
+                        "type": "Literal['annual', 'quarter']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
@@ -17682,6 +19406,14 @@
                     }
                 ],
                 "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
@@ -19997,6 +21729,14 @@
                     }
                 ],
                 "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
@@ -24906,6 +26646,160 @@
             },
             "model": "TrailingDividendYield"
         },
+        "/equity/fundamental/management_discussion_analysis": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the Management Discussion & Analysis section from the financial statements for a given company.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', raw_html=True)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol to get data for.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "int",
+                        "description": "Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "wrap_length",
+                        "type": "int",
+                        "description": "The length to wrap the extracted text, excluding tables. Default is 120.",
+                        "default": 120,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_tables",
+                        "type": "bool",
+                        "description": "Return tables formatted as markdown in the text. Default is False. Tables may reveal 'missing' content, but will likely need some level of manual cleaning, post-request, to display properly. In some cases, tables may not be recoverable due to the nature of the document.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "When True, the file will be cached for use later. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "raw_html",
+                        "type": "bool",
+                        "description": "When True, the raw HTML content of the entire filing will be returned. Default is False. Use this option to parse the document manually.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ManagementDiscussionAnalysis]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "The calendar year of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "int",
+                        "description": "The calendar period of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "The end date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "content",
+                        "type": "str",
+                        "description": "The content of the management discussion and analysis.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "The URL of the filing from which the data was extracted.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ManagementDiscussionAnalysis"
+        },
         "/equity/ownership/major_holders": {
             "deprecated": {
                 "flag": null,
@@ -25740,6 +27634,32 @@
                         "optional": true,
                         "choices": null
                     }
+                ],
+                "sec": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format. Wide date ranges can result in long download times. Recommended to use a smaller date range, default is 120 days ago.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format. Default is today.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Persist the data locally for future use. Default is True. Each form submission is an individual download and the SEC limits the number of concurrent downloads. This prevents the same file from being downloaded multiple times.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
                 ]
             },
             "returns": {
@@ -25751,7 +27671,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp', 'intrinio']]",
+                        "type": "Optional[Literal['fmp', 'intrinio', 'sec']]",
                         "description": "Provider name."
                     },
                     {
@@ -26013,6 +27933,168 @@
                         "name": "report_line_number",
                         "type": "int",
                         "description": "Report line number of the insider trading.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "company_name",
+                        "type": "str",
+                        "description": "Name of the company.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "form",
+                        "type": "Union[int, str]",
+                        "description": "Form type.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "director",
+                        "type": "bool",
+                        "description": "Whether the owner is a director.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "officer",
+                        "type": "bool",
+                        "description": "Whether the owner is an officer.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ten_percent_owner",
+                        "type": "bool",
+                        "description": "Whether the owner is a 10% owner.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "other",
+                        "type": "bool",
+                        "description": "Whether the owner is classified as other.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "other_text",
+                        "type": "str",
+                        "description": "Text for other classification.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_timeliness",
+                        "type": "str",
+                        "description": "Timeliness of the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ownership_type",
+                        "type": "str",
+                        "description": "Type of ownership, direct or indirect.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "nature_of_ownership",
+                        "type": "str",
+                        "description": "Nature of the ownership.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exercise_date",
+                        "type": "date",
+                        "description": "Date of exercise.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "expiration_date",
+                        "type": "date",
+                        "description": "Date of expiration for the derivative.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "deemed_execution_date",
+                        "type": "date",
+                        "description": "Deemed execution date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_security_title",
+                        "type": "str",
+                        "description": "Title of the underlying security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_security_shares",
+                        "type": "float",
+                        "description": "Number of underlying shares associated with the derivative.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_security_value",
+                        "type": "float",
+                        "description": "Value of the underlying security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "conversion_exercise_price",
+                        "type": "float",
+                        "description": "Price of conversion or exercise of the securities.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_value",
+                        "type": "float",
+                        "description": "Total value of the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value_owned",
+                        "type": "float",
+                        "description": "Value of the securities owned after the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnote",
+                        "type": "str",
+                        "description": "Footnote for the transaction.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -26329,7 +28411,7 @@
                     {
                         "name": "security_type",
                         "type": "Literal['SH', 'PRN']",
-                        "description": "The total number of shares of the class of security or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.",
+                        "description": "Whether the principal amount represents the number of shares or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -26343,9 +28425,17 @@
                         "choices": null
                     },
                     {
+                        "name": "investment_discretion",
+                        "type": "str",
+                        "description": "The investment discretion held by the Manager. Sole, shared-defined (DFN), or shared-other (OTR).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "voting_authority_sole",
                         "type": "int",
-                        "description": "The number of shares for which the Manager exercises sole voting authority (none).",
+                        "description": "The number of shares for which the Manager exercises sole voting authority.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -26353,15 +28443,15 @@
                     {
                         "name": "voting_authority_shared",
                         "type": "int",
-                        "description": "The number of shares for which the Manager exercises a defined shared voting authority (none).",
+                        "description": "The number of shares for which the Manager exercises a defined shared voting authority.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "voting_authority_other",
+                        "name": "voting_authority_none",
                         "type": "int",
-                        "description": "The number of shares for which the Manager exercises other shared voting authority (none).",
+                        "description": "The number of shares for which the Manager exercises no voting authority.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -26369,7 +28459,7 @@
                     {
                         "name": "principal_amount",
                         "type": "int",
-                        "description": "The total number of shares of the class of security or the principal amount of such class. Only long positions are reported",
+                        "description": "The total number of shares of the class of security or the principal amount of such class. Defined by the 'security_type'. Only long positions are reported",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -26395,6 +28485,175 @@
                 ]
             },
             "model": "Form13FHR"
+        },
+        "/equity/ownership/government_trades": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Obtain government transaction data, including data from the Senate\nand the House of Representatives.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')\nobb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "chamber",
+                        "type": "Literal['house', 'senate', 'all']",
+                        "description": "Government Chamber.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "Annotated[int, Ge(ge=0)]",
+                        "description": "The number of data entries to return.",
+                        "default": 100,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[GovernmentTrades]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_date",
+                        "type": "date",
+                        "description": "Date of Transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "representative",
+                        "type": "str",
+                        "description": "Name of Representative.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "chamber",
+                        "type": "Literal['house', 'senate']",
+                        "description": "Government Chamber - House or Senate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "owner",
+                        "type": "str",
+                        "description": "Ownership status (e.g., Spouse, Joint).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "asset_type",
+                        "type": "str",
+                        "description": "Type of asset involved in the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "asset_description",
+                        "type": "str",
+                        "description": "Description of the asset.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_type",
+                        "type": "str",
+                        "description": "Type of transaction (e.g., Sale, Purchase).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "amount",
+                        "type": "str",
+                        "description": "Transaction amount range.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "comment",
+                        "type": "str",
+                        "description": "Additional comments on the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "Link to the transaction document.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "GovernmentTrades"
         },
         "/equity/price/quote": {
             "deprecated": {
@@ -27246,7 +29505,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -27255,9 +29514,14 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Y"
                         ]
                     }
                 ],
@@ -28239,11 +30503,26 @@
                     },
                     {
                         "name": "sector",
-                        "type": "Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']",
+                        "type": "Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services']",
                         "description": "Filter by sector.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "consumer_cyclical",
+                            "energy",
+                            "technology",
+                            "industrials",
+                            "financial_services",
+                            "basic_materials",
+                            "communication_services",
+                            "consumer_defensive",
+                            "healthcare",
+                            "real_estate",
+                            "utilities",
+                            "industrial_goods",
+                            "financial",
+                            "services"
+                        ]
                     },
                     {
                         "name": "industry",
@@ -28267,13 +30546,468 @@
                         "description": "Filter by exchange.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "amex",
+                            "ams",
+                            "ase",
+                            "asx",
+                            "ath",
+                            "bme",
+                            "bru",
+                            "bud",
+                            "bue",
+                            "cai",
+                            "cnq",
+                            "cph",
+                            "dfm",
+                            "doh",
+                            "etf",
+                            "euronext",
+                            "hel",
+                            "hkse",
+                            "ice",
+                            "iob",
+                            "ist",
+                            "jkt",
+                            "jnb",
+                            "jpx",
+                            "kls",
+                            "koe",
+                            "ksc",
+                            "kuw",
+                            "lse",
+                            "mex",
+                            "mutual_fund",
+                            "nasdaq",
+                            "neo",
+                            "nse",
+                            "nyse",
+                            "nze",
+                            "osl",
+                            "otc",
+                            "pnk",
+                            "pra",
+                            "ris",
+                            "sao",
+                            "sau",
+                            "set",
+                            "sgo",
+                            "shh",
+                            "shz",
+                            "six",
+                            "sto",
+                            "tai",
+                            "tlv",
+                            "tsx",
+                            "two",
+                            "vie",
+                            "wse",
+                            "xetra"
+                        ]
                     },
                     {
                         "name": "limit",
                         "type": "int",
                         "description": "Limit the number of results to return.",
                         "default": 50000,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "yfinance": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Filter by country, as a two-letter country code. Default is, 'us'. Use, 'all', for all countries.",
+                        "default": "us",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "ar",
+                            "at",
+                            "au",
+                            "be",
+                            "br",
+                            "ca",
+                            "ch",
+                            "cl",
+                            "cn",
+                            "cz",
+                            "de",
+                            "dk",
+                            "ee",
+                            "eg",
+                            "es",
+                            "fi",
+                            "fr",
+                            "gb",
+                            "gr",
+                            "hk",
+                            "hu",
+                            "id",
+                            "ie",
+                            "il",
+                            "in",
+                            "is",
+                            "it",
+                            "jp",
+                            "kr",
+                            "kw",
+                            "lk",
+                            "lt",
+                            "lv",
+                            "mx",
+                            "my",
+                            "nl",
+                            "no",
+                            "nz",
+                            "pe",
+                            "ph",
+                            "pk",
+                            "pl",
+                            "pt",
+                            "qa",
+                            "ro",
+                            "ru",
+                            "sa",
+                            "se",
+                            "sg",
+                            "sr",
+                            "th",
+                            "tr",
+                            "tw",
+                            "us",
+                            "ve",
+                            "vn",
+                            "za"
+                        ]
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "Literal['ams', 'aqs', 'ase', 'asx', 'ath', 'ber', 'bru', 'bse', 'bts', 'bud', 'bue', 'bvb', 'bvc', 'ccs', 'cnq', 'cph', 'cxe', 'dfm', 'doh', 'dus', 'ebs', 'fka', 'fra', 'ger', 'ham', 'han', 'hel', 'hkg', 'ice', 'iob', 'ise', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'kuw', 'lis', 'lit', 'lse', 'mce', 'mex', 'mil', 'mun', 'ncm', 'neo', 'ngm', 'nms', 'nsi', 'nyq', 'nze', 'oem', 'oqb', 'oqx', 'osl', 'par', 'pnk', 'pra', 'ris', 'sau', 'ses', 'set', 'sgo', 'shh', 'shz', 'sto', 'stu', 'tai', 'tal', 'tlv', 'tor', 'two', 'van', 'vie', 'vse', 'wse']",
+                        "description": "Filter by exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "ams",
+                            "aqs",
+                            "ase",
+                            "asx",
+                            "ath",
+                            "ber",
+                            "bru",
+                            "bse",
+                            "bts",
+                            "bud",
+                            "bue",
+                            "bvb",
+                            "bvc",
+                            "ccs",
+                            "cnq",
+                            "cph",
+                            "cxe",
+                            "dfm",
+                            "doh",
+                            "dus",
+                            "ebs",
+                            "fka",
+                            "fra",
+                            "ger",
+                            "ham",
+                            "han",
+                            "hel",
+                            "hkg",
+                            "ice",
+                            "iob",
+                            "ise",
+                            "ist",
+                            "jkt",
+                            "jnb",
+                            "jpx",
+                            "kls",
+                            "kuw",
+                            "lis",
+                            "lit",
+                            "lse",
+                            "mce",
+                            "mex",
+                            "mil",
+                            "mun",
+                            "ncm",
+                            "neo",
+                            "ngm",
+                            "nms",
+                            "nsi",
+                            "nyq",
+                            "nze",
+                            "oem",
+                            "oqb",
+                            "oqx",
+                            "osl",
+                            "par",
+                            "pnk",
+                            "pra",
+                            "ris",
+                            "sau",
+                            "ses",
+                            "set",
+                            "sgo",
+                            "shh",
+                            "shz",
+                            "sto",
+                            "stu",
+                            "tai",
+                            "tal",
+                            "tlv",
+                            "tor",
+                            "two",
+                            "van",
+                            "vie",
+                            "vse",
+                            "wse"
+                        ]
+                    },
+                    {
+                        "name": "sector",
+                        "type": "Literal['basic_materials', 'communication_services', 'consumer_cyclical', 'consumer_defensive', 'energy', 'financial_services', 'healthcare', 'industrials', 'real_estate', 'technology', 'utilities']",
+                        "description": "Filter by sector.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "basic_materials",
+                            "communication_services",
+                            "consumer_cyclical",
+                            "consumer_defensive",
+                            "energy",
+                            "financial_services",
+                            "healthcare",
+                            "industrials",
+                            "real_estate",
+                            "technology",
+                            "utilities"
+                        ]
+                    },
+                    {
+                        "name": "industry",
+                        "type": "str",
+                        "description": "Filter by industry.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "advertising_agencies",
+                            "aerospace_defense",
+                            "agricultural_inputs",
+                            "airlines",
+                            "airports_air_services",
+                            "aluminum",
+                            "apparel_manufacturing",
+                            "apparel_retail",
+                            "asset_management",
+                            "auto_components",
+                            "auto_manufacturers",
+                            "auto_parts",
+                            "auto_truck_dealerships",
+                            "automobiles",
+                            "banks",
+                            "biotechnology",
+                            "broadcasting",
+                            "building_materials",
+                            "building_products",
+                            "building_products_equipment",
+                            "business_equipment_supplies",
+                            "capital_markets",
+                            "chemicals",
+                            "coking_coal",
+                            "commercial_services",
+                            "communication_equipment",
+                            "computer_hardware",
+                            "confectioners",
+                            "construction_engineering",
+                            "construction_materials",
+                            "consulting_services",
+                            "consumer_durables",
+                            "consumer_electronics",
+                            "consumer_services",
+                            "copper",
+                            "credit_services",
+                            "department_stores",
+                            "diagnostics_research",
+                            "discount_stores",
+                            "diversified_financials",
+                            "education_training_services",
+                            "electrical_equipment",
+                            "electrical_equipment_parts",
+                            "electronic_components",
+                            "electronic_gaming_multimedia",
+                            "electronics_computer_distribution",
+                            "energy_services",
+                            "engineering_construction",
+                            "entertainment",
+                            "farm_heavy_construction_machinery",
+                            "farm_products",
+                            "financial_conglomerates",
+                            "financial_data_stock_exchanges",
+                            "food_distribution",
+                            "footwear_accessories",
+                            "furnishings_fixtures_appliances",
+                            "gambling",
+                            "gold",
+                            "grocery_stores",
+                            "health_information_services",
+                            "healthcare_plans",
+                            "home_builders",
+                            "home_improvement_retail",
+                            "household_products",
+                            "household_personal_products",
+                            "industrial_conglomerates",
+                            "industrial_distribution",
+                            "information_technology_services",
+                            "infrastructure_operations",
+                            "insurance",
+                            "integrated_freight_logistics",
+                            "internet_content_information",
+                            "internet_retail",
+                            "leisure",
+                            "lodging",
+                            "lumber_wood_production",
+                            "luxury_goods",
+                            "machinery",
+                            "marine_shipping",
+                            "media",
+                            "medical_care_facilities",
+                            "medical_devices",
+                            "medical_distribution",
+                            "medical_instruments_supplies",
+                            "metal_fabrication",
+                            "mortgage_finance",
+                            "oil_gas_drilling",
+                            "oil_gas_e_p",
+                            "oil_gas_equipment_services",
+                            "oil_gas_integrated",
+                            "oil_gas_midstream",
+                            "oil_gas_producers",
+                            "oil_gas_refining_marketing",
+                            "other_industrial_metals_mining",
+                            "other_precious_metals_mining",
+                            "packaged_foods",
+                            "packaging_containers",
+                            "paper_forestry",
+                            "paper_paper_products",
+                            "personal_services",
+                            "pharmaceuticals",
+                            "pharmaceutical_retailers",
+                            "pollution_treatment_controls",
+                            "precious_metals",
+                            "publishing",
+                            "railroads",
+                            "real_estate",
+                            "recreational_vehicles",
+                            "refiners_pipelines",
+                            "rental_leasing_services",
+                            "residential_construction",
+                            "resorts_casinos",
+                            "restaurants",
+                            "retailing",
+                            "scientific_technical_instruments",
+                            "security_protection_services",
+                            "semiconductor_equipment_materials",
+                            "semiconductors",
+                            "shell_companies",
+                            "silver",
+                            "software_and_services",
+                            "solar",
+                            "specialty_business_services",
+                            "specialty_chemicals",
+                            "specialty_industrial_machinery",
+                            "specialty_retail",
+                            "staffing_employment_services",
+                            "steel",
+                            "technology_hardware",
+                            "telecom_services",
+                            "textiles_apparel",
+                            "textile_manufacturing",
+                            "thermal_coal",
+                            "tobacco",
+                            "tools_accessories",
+                            "traders_distributors",
+                            "transportation",
+                            "transportation_infrastructure",
+                            "travel_services",
+                            "trucking",
+                            "uranium",
+                            "utilities",
+                            "waste_management"
+                        ]
+                    },
+                    {
+                        "name": "mktcap_min",
+                        "type": "int",
+                        "description": "Filter by market cap greater than this value. Default is 500M.",
+                        "default": 500000000,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "mktcap_max",
+                        "type": "int",
+                        "description": "Filter by market cap less than this value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_min",
+                        "type": "float",
+                        "description": "Filter by price greater than this value. Default is, 5",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_max",
+                        "type": "float",
+                        "description": "Filter by price less than this value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume_min",
+                        "type": "int",
+                        "description": "Filter by volume greater than this value. Default is, 10K",
+                        "default": 10000,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume_max",
+                        "type": "int",
+                        "description": "Filter by volume less than this value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "beta_min",
+                        "type": "float",
+                        "description": "Filter by a beta greater than this value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "beta_max",
+                        "type": "float",
+                        "description": "Filter by a beta less than this value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results returned. Default is, 200. Set to, 0, for all results.",
+                        "default": 200,
                         "optional": true,
                         "choices": null
                     }
@@ -28288,7 +31022,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
+                        "type": "Optional[Literal['fmp', 'yfinance']]",
                         "description": "Provider name."
                     },
                     {
@@ -28420,6 +31154,168 @@
                         "name": "actively_trading",
                         "type": "Literal[True, False]",
                         "description": "Whether the ETF is actively trading.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "yfinance": [
+                    {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "market_cap",
+                        "type": "float",
+                        "description": "Market Cap.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "shares_outstanding",
+                        "type": "float",
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "book_value",
+                        "type": "float",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the stock is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exchange_timezone",
+                        "type": "str",
+                        "description": "Timezone of the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -29011,7 +31907,64 @@
                         "description": "The market to fetch data for.",
                         "default": "nasdaq",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "amex",
+                            "ams",
+                            "ase",
+                            "asx",
+                            "ath",
+                            "bme",
+                            "bru",
+                            "bud",
+                            "bue",
+                            "cai",
+                            "cnq",
+                            "cph",
+                            "dfm",
+                            "doh",
+                            "etf",
+                            "euronext",
+                            "hel",
+                            "hkse",
+                            "ice",
+                            "iob",
+                            "ist",
+                            "jkt",
+                            "jnb",
+                            "jpx",
+                            "kls",
+                            "koe",
+                            "ksc",
+                            "kuw",
+                            "lse",
+                            "mex",
+                            "mutual_fund",
+                            "nasdaq",
+                            "neo",
+                            "nse",
+                            "nyse",
+                            "nze",
+                            "osl",
+                            "otc",
+                            "pnk",
+                            "pra",
+                            "ris",
+                            "sao",
+                            "sau",
+                            "set",
+                            "sgo",
+                            "shh",
+                            "shz",
+                            "six",
+                            "sto",
+                            "tai",
+                            "tlv",
+                            "tsx",
+                            "two",
+                            "vie",
+                            "wse",
+                            "xetra"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -29479,7 +32432,7 @@
                     {
                         "name": "symbol",
                         "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -29501,7 +32454,23 @@
                         "choices": null
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['day', 'week', 'month', 'quarter', 'year']",
+                        "description": "None",
+                        "default": "day",
+                        "optional": true,
+                        "choices": [
+                            "day",
+                            "week",
+                            "month",
+                            "quarter",
+                            "year"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -29512,7 +32481,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
+                        "type": "Optional[Literal['fmp', 'intrinio']]",
                         "description": "Provider name."
                     },
                     {
@@ -29559,7 +32528,8 @@
                         "choices": null
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "intrinio": []
             },
             "model": "HistoricalMarketCap"
         },
@@ -29588,7 +32558,14 @@
                         "description": "The exchange code the ETF trades on.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "AMEX",
+                            "NYSE",
+                            "NASDAQ",
+                            "ETF",
+                            "TSX",
+                            "EURONEXT"
+                        ]
                     },
                     {
                         "name": "is_active",
@@ -29961,7 +32938,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -29970,9 +32947,14 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Y"
                         ]
                     }
                 ],
@@ -32215,7 +35197,7 @@
                 "fmp": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], str]",
+                        "type": "Union[Union[date, str], str]",
                         "description": "A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF.",
                         "default": null,
                         "optional": true,
@@ -32243,7 +35225,7 @@
                 "sec": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], str]",
+                        "type": "Union[Union[date, str], str]",
                         "description": "A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing.",
                         "default": null,
                         "optional": true,
@@ -35094,7 +38076,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[None, date, str], List[Union[None, date, str]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. By default is the current data. Multiple items allowed for provider(s): econdb, federal_reserve, fmp, fred.",
                         "default": null,
                         "optional": true,
@@ -35104,14 +38086,17 @@
                 "econdb": [
                     {
                         "name": "country",
-                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']",
-                        "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. Multiple items allowed for provider(s): econdb.",
                         "default": "united_states",
                         "optional": true,
                         "choices": [
                             "australia",
                             "canada",
                             "china",
+                            "ecb_instantaneous_forward",
+                            "ecb_par_yield",
+                            "ecb_spot_rate",
                             "hong_kong",
                             "india",
                             "japan",
@@ -35200,14 +38185,6 @@
                         "name": "maturity",
                         "type": "str",
                         "description": "Maturity length of the security.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "rate",
-                        "type": "float",
-                        "description": "The yield as a normalized percent (0.05 is 5%)",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -35876,7 +38853,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -36509,7 +39486,7 @@
                     {
                         "name": "index",
                         "type": "Union[str, List[str]]",
-                        "description": "The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'. Multiple items allowed for provider(s): fred.",
+                        "description": "The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'.\n        Possible values are:\n            corporate\n            seasoned_corporate\n            liquid_corporate\n            yield_curve\n            crossover\n            public_sector\n            private_sector\n            non_financial\n            high_grade\n            high_yield\n            liquid_emea\n            emea\n            liquid_asia\n            asia\n            liquid_latam\n            latam\n            liquid_aaa\n            liquid_bbb\n            aaa\n            aa\n            a\n            bbb\n            bb\n            b\n            ccc Multiple items allowed for provider(s): fred.",
                         "default": "yield_curve",
                         "optional": true,
                         "choices": [
@@ -37187,7 +40164,7 @@
                     },
                     {
                         "name": "date_first_added",
-                        "type": "Union[str, date]",
+                        "type": "Union[date, str]",
                         "description": "Date the constituent company was added to the index.",
                         "default": null,
                         "optional": true,
@@ -37203,7 +40180,7 @@
                     },
                     {
                         "name": "founded",
-                        "type": "Union[str, date]",
+                        "type": "Union[date, str]",
                         "description": "Founding year of the constituent company in the index.",
                         "default": null,
                         "optional": true,
@@ -37530,8 +40507,8 @@
                     },
                     {
                         "name": "source",
-                        "type": "str",
-                        "description": "A comma-separated list of the domains requested.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A comma-separated list of the domains requested. Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -38086,8 +41063,8 @@
                     },
                     {
                         "name": "source",
-                        "type": "str",
-                        "description": "A comma-separated list of the domains requested.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A comma-separated list of the domains requested. Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -38430,8 +41407,8 @@
                         "name": "source",
                         "type": "str",
                         "description": "Source of the news article",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ]

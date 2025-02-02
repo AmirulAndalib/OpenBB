@@ -2,46 +2,6 @@
 
 from copy import deepcopy
 
-TO_CAPS_STRINGS = [
-    "Pe",
-    "Sloos",
-    "Eps",
-    "Ebitda",
-    "Otc",
-    "Cpi",
-    "Pce",
-    "Gdp",
-    "Lbma",
-    "Ipo",
-    "Nbbo",
-    "Ameribor",
-    "Sonia",
-    "Effr",
-    "Sofr",
-    "Iorb",
-    "Estr",
-    "Ecb",
-    "Dpcredit",
-    "Tcm",
-    "Us",
-    "Ice",
-    "Bofa",
-    "Hqm",
-    "Sp500",
-    "Sec",
-    "Cftc",
-    "Cot",
-    "Etf",
-    "Eu",
-    "Tips",
-    "Rss",
-    "Sic",
-    "Cik",
-    "Bls",
-    "Fred",
-    "Cusip",
-]
-
 
 def modify_query_schema(query_schema: list[dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
@@ -103,7 +63,11 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
 def build_json(openapi: dict, widget_exclude_filter: list):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
-    from .openapi import data_schema_to_columns_defs, get_query_schema_for_widget
+    from .openapi import (
+        TO_CAPS_STRINGS,
+        data_schema_to_columns_defs,
+        get_query_schema_for_widget,
+    )
 
     if not openapi:
         return {}
@@ -118,9 +82,12 @@ def build_json(openapi: dict, widget_exclude_filter: list):
         route_api = openapi["paths"][route]
         method = list(route_api)[0]
         widget_id = route_api[method]["operationId"]
-
+        widget_config_dict = route_api[method].get("widget_config", {})
         # Prepare the query schema of the widget
         query_schema, has_chart = get_query_schema_for_widget(openapi, route)
+        response_schema = route_api[method]["responses"]["200"]["content"][
+            "application/json"
+        ].get("schema", {})
 
         # Extract providers from the query schema
         providers: list = []
@@ -186,7 +153,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "endpoint": route.replace("/api", "api"),
                 "gridData": {"w": 45, "h": 15},
                 "data": {
-                    "dataKey": "results",
+                    "dataKey": "results" if response_schema else "",
                     "table": {
                         "showAll": True,
                     },
@@ -210,6 +177,10 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
             if columns_defs:
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
+
+            # Update the widget configuration with the supplied configurations in @router.command
+            if widget_config_dict:
+                widget_config.update(widget_config_dict)
 
             # Add the widget configuration to the widgets.json
             if widget_config["widgetId"] not in widget_exclude_filter:
@@ -236,7 +207,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 widget_config_chart["gridData"]["h"] = 20
                 widget_config_chart["gridData"]["w"] = 50
                 widget_config_chart["defaultViz"] = "chart"
-                widget_config_chart["data"]["dataKey"] = "chart.content"
+                widget_config_chart["data"]["dataKey"] = (
+                    "chart.content" if response_schema else ""
+                )
                 if widget_config_chart["widgetId"] not in widget_exclude_filter:
                     widgets_json[widget_config_chart["widgetId"]] = widget_config_chart
 
